@@ -65,18 +65,43 @@ function updateExpenseTotal() {
       // console.log(totalPrice)
       let balaceAmount = document.querySelector("#balance-amount");
       balaceAmount.innerText = totalPrice;
-       // updateExpenseTotal()
+     }else {
+        let total = 0;
+        expenseAmountTotal.innerText = total;
+        // updateExpenseTotal()
      }
    }
 
-   selectExpenseList.addEventListener("click" , function(event) {
+  //  selectExpenseList.addEventListener("click" , function(event) {
+  //   const currentElement = event.target;
+  //   const currentV =  parseFloat(document.querySelector(".expense-amount").innerText);
+  //   let currentAm = parseFloat(document.querySelector("#expense-amount").innerText);
+  //       console.log(currentV , "value")
+  //       console.log(currentAm , "input")
+  //       let total = 0;
+  //   if (currentElement?.classList?.contains("fa-trash")){
+  //       total -= currentV - currentAm;
+  //       currentElement.closest(".expense-item").remove();
+  //        updateExpenseTotal();
+  //        currentAm = total;
+  // }
+  // // currentAm = "";
+  //  })
+
+   selectExpenseList.addEventListener("click", function(event) {
     const currentElement = event.target;
-    if (currentElement?.classList?.contains("fa-trash")){
-    const currentV =  parseFloat(currentElement.closest(".expense-amount"));
-        console.log(currentV.innerText)
-    // currentElement.closest(".expense-item").remove();
-   // // total -= expenseAmountTotal.innerText - currentElement.value;
-    updateExpenseTotal();
-  }
-    // console.log(total)
-   })
+
+    if (currentElement?.classList?.contains("fa-trash")) {
+        const removedExpenseAmount = parseFloat(currentElement.closest(".expense-item").querySelector(".expense-amount").innerText);
+        currentElement.closest(".expense-item").remove();
+
+        // Update the total expense amount
+        updateExpenseTotal();
+
+        // Recalculate and update the balance amount
+        const expenseAmountTotalFinal = parseFloat(document.querySelector("#expense-amount").innerText);
+        const budgetAmount = parseFloat(document.querySelector("#budget-amount").innerText);
+        const balanceAmount = budgetAmount - expenseAmountTotalFinal;
+        document.querySelector("#balance-amount").innerText = balanceAmount; // Assuming 2 decimal places
+    }
+});

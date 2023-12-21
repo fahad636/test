@@ -3,32 +3,35 @@ const selectBudgetInput = document.querySelector(".budget-input");
 const selectBudgetAmount = document.querySelector("#budget-amount");
 const selectExpenseList = document.querySelector(".expense-list");
 const expenseAmountTotal = document.querySelector("#expense-amount");
-
-
-selectBudgetForm.addEventListener("submit", function(event) {
-	event.preventDefault();
-    const currentValue = selectBudgetInput.value;
-    if(!currentValue){
-        alert("Please Enter Your Budget")
-        return;
-    }
-     selectBudgetAmount.innerText = currentValue;
-     selectBudgetInput.value = "" ;
-     updateExpenseTotal()
-})
 const selectExpenseForm = document.querySelector("#expense-form");
 const selectExpenseInput = document.querySelector("#expense-input");
 const selectAmountInput = document.querySelector("#amount-input");
-selectExpenseForm.addEventListener("submit" , function(event) {
+const balanceAmounts = document.querySelector("#balance-amount");
+
+   selectBudgetForm.addEventListener("submit", function(event) {
+	 event.preventDefault();
+       const currentValue = selectBudgetInput.value;
+      if(!currentValue){
+        alert("Please Enter Your Budget")
+        return;
+       }
+     selectBudgetAmount.innerText = currentValue;
+     selectBudgetAmount.innerText = currentValue;
+     balanceAmounts.innerText = currentValue;
+     selectBudgetInput.value = "" ;
+     updateExpenseTotal()
+})
+  
+  selectExpenseForm.addEventListener("submit" , function(event) {
     event.preventDefault();
      const selectExpenseInputValue = selectExpenseInput.value;
      const selectAmountInputValue = selectAmountInput.value;
      if(!selectExpenseInputValue){
-        alert("please Fill Expense")
+        alert("Please Enter Your Expense")
         return;
-     }
+      }
      if(!selectAmountInputValue){
-        alert("please Fill Expense Amount")
+        alert("Please Enter Expense Amount")
         return;
      }
      const createElement = document.createElement("div");
@@ -46,62 +49,37 @@ selectExpenseForm.addEventListener("submit" , function(event) {
      selectExpenseInput.value = "";
      selectAmountInput.value = "";
      updateExpenseTotal()
-})
-function updateExpenseTotal() {
- const selectExpenseRow = document.querySelectorAll(".expense-list .expense-item");
-    if(selectExpenseRow?.length > 0){
+  })
+    function updateExpenseTotal() {
+     const selectExpenseRow = document.querySelectorAll(".expense-list .expense-item");
+      if(selectExpenseRow?.length > 0){
         let total = 0;
          selectExpenseRow.forEach(function(singleRow) {
          const expenseAmount = parseFloat(singleRow.querySelector(".expense-amount").innerText);
            total += expenseAmount;
          })
         expenseAmountTotal.innerText = total;
-      const expenseAmountTotalFinal = parseFloat(document.querySelector("#expense-amount").innerText);
-      const budgetAmount = parseFloat(document.querySelector("#budget-amount").innerText)
-      // console.log(expenseAmountTotalFinal)
-      // console.log(budgetAmount)
-      let totalPrice = 0;
-      totalPrice -= expenseAmountTotalFinal - budgetAmount;
-      // console.log(totalPrice)
-      let balaceAmount = document.querySelector("#balance-amount");
-      balaceAmount.innerText = totalPrice;
-     }else {
+        let totalPrice = 0;
+         totalPrice -= expenseAmountTotal.innerText - selectBudgetAmount.innerText;
+        let balaceAmount = document.querySelector("#balance-amount");
+        balaceAmount.innerText = totalPrice;
+        }else {
         let total = 0;
         expenseAmountTotal.innerText = total;
-        // updateExpenseTotal()
-     }
-   }
-
-  //  selectExpenseList.addEventListener("click" , function(event) {
-  //   const currentElement = event.target;
-  //   const currentV =  parseFloat(document.querySelector(".expense-amount").innerText);
-  //   let currentAm = parseFloat(document.querySelector("#expense-amount").innerText);
-  //       console.log(currentV , "value")
-  //       console.log(currentAm , "input")
-  //       let total = 0;
-  //   if (currentElement?.classList?.contains("fa-trash")){
-  //       total -= currentV - currentAm;
-  //       currentElement.closest(".expense-item").remove();
-  //        updateExpenseTotal();
-  //        currentAm = total;
-  // }
-  // // currentAm = "";
-  //  })
-
-   selectExpenseList.addEventListener("click", function(event) {
+        }
+    }
+ 
+    selectExpenseList.addEventListener("click", function(event) {
     const currentElement = event.target;
-
-    if (currentElement?.classList?.contains("fa-trash")) {
+     if (currentElement?.classList?.contains("fa-trash")) {
         const removedExpenseAmount = parseFloat(currentElement.closest(".expense-item").querySelector(".expense-amount").innerText);
         currentElement.closest(".expense-item").remove();
-
         // Update the total expense amount
         updateExpenseTotal();
-
         // Recalculate and update the balance amount
-        const expenseAmountTotalFinal = parseFloat(document.querySelector("#expense-amount").innerText);
-        const budgetAmount = parseFloat(document.querySelector("#budget-amount").innerText);
-        const balanceAmount = budgetAmount - expenseAmountTotalFinal;
-        document.querySelector("#balance-amount").innerText = balanceAmount; // Assuming 2 decimal places
+        const balanceAmount = selectBudgetAmount.innerText - expenseAmountTotal.innerText;
+        // document.querySelector("#balance-amount").innerText = balanceAmount;
+        balanceAmounts.innerText = balanceAmount;
+
     }
 });
